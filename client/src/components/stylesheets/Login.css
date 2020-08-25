@@ -10,3 +10,8 @@
     margin: 4px 2px;
     cursor: pointer;
   }
+
+.image {
+  width: 50%;
+  height: 50%;
+}

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Promise = require('promise');
 const axios = require('axios').default;
 const querystring = require('querystring');
 
@@ -74,44 +75,80 @@ router.get("/music", (req, res, next) => {
       }
     };
 
+    // get the lyric 
+    const lyric_api_base_url = "https://api.lyrics.ovh/v1";
+    let lyric_api_url = [];
+    let lyrics = [];
+
     // get the recommendation music from spotify
     axios.get(url, config)
          .then((spotify_res) => {
-           // get the lyric 
-           const lyric_api_base_url = "https://api.lyrics.ovh/v1";
-           let lyric_api_url = [];
-           let lyrics = [];
-
-           // constructing the url for getting the lyric
+           // constructing the url for getting the lyric and artist Images
            spotify_res.data.tracks.map((t) => {
               lyric_api_url.push(`${lyric_api_base_url}/${t.album.artists[0].name}/${t.name}`);
            });
            
 
            // getting the lyric from the lyrics.ovh API
-           const requests = lyric_api_url.map((url) => {
-              axios.get(url)
-                   .then((lyric_res) => lyrics.push(lyric_res.data.lyrics))
-                   .catch((e) => res.status(400).send({"message": `${e}`})); // catch the error when getting the lyric form the lyric.ovh API
-           });
+           const requestsLyric = lyric_api_url.map((url) => {
+                axios.get(url)
+                   .then((lyric_res) => {
+                     // Check if lyric is found
+                     if(lyric_res.data.lyrics != undefined){ 
+                        lyrics.push(lyric_res.data.lyrics);
+                        //console.log(lyric_res.data.lyrics);
+                     }else{
+                       lyrics.push(null);
+                       //console.log(lyric_res.data.error);
+                     }
+                    })
+                   .catch((e) => lyrics.push(null)); // catch the error when getting the lyric form the lyric.ovh API
+                  });
+
+           // get user Info from spotify
+           const user_info_url = "https://api.spotify.com/v1/me";
+           let userName = null;
+           let userAvatar = null;
+           const requestUserInfo = axios.get(user_info_url, config)
+                                        .then((user_res) => {
+                                          console.log(user_res.data)
+                                          userName = user_res.data.display_name;
+                                          userAvatar = user_res.data.images[0].url;
+                                          console.log(userName);
+                                          console.log(userAvatar);
+                                        })
+                                        .catch((e) => res.status(400).send({"message": `${e}`})); // catch the error when getting the the user Info from Spotify
 
            // wait until finish getting all the lyric
-           Promise.all(requests)
-                  .then(() => { // making the data to be sended to the client
+          return Promise.all(requestUserInfo)
+                  .then((val) => { // making the data to be sended to the client
+                    
+                    let response = {};
+                    let info = {
+                      userName: userName,
+                      userAvatar: userAvatar
+                    }
                     let data = [];
                     spotify_res.data.tracks.map((t, i) => {
                       data[i] = {
-                        song_title: t.name,
-                        artists_name: t.album.artists[0].name,
+                        songTitle: t.name,
+                        songUrl: t.external_urls.spotify,
+                        artistName: t.album.artists[0].name,
+                        artistImages: t.album.images[0].url,
+                        previewUrl: t.preview_url,
+                        popularity: t.popularity,
                         lyric: lyrics[i]
                       };
                     });
 
-                    res.status(200).send(data);
+                    response = {
+                      info: info,
+                      data: data
+                    }
 
+                    res.status(200).send(response);
                   })
                   .catch((e) => console.log(e));
-
 
          }).catch((e) => { // catch the error when getting the data from Spotify API
            res.status(400).send({ "message": `${e}` })
