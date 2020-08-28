@@ -6,8 +6,7 @@ import "antd/dist/antd.css";
 const axios = require('axios').default;
 
 
-const SERVER_MUSIC_URL = "http://localhost:3000/api/music";
-const SERVER_USER_URL = "http://localhost:3000/api/user";
+const SERVER_MUSIC_URL = "http://localhost:443/api/music";
 
 class Home extends Component {
 
@@ -48,28 +47,10 @@ class Home extends Component {
         });
     }
 
-    getUserInfo(){
-        const config = { 
-            params: {
-                access_token: this.props.access_token,
-                refresh_token: this.props.refresh_token
-            }
-        }
-
-        axios.get(SERVER_USER_URL, config)
-             .then((res) => {
-                this.setState({
-                        userInfo: res.data.info,
-                        userName: res.data.info.userName,
-                        userAvatar: res.data.info.userAvatar
-                }, () => console.log(this.state.userInfo) );
-             });
-    }
 
     // make an API call
     componentDidMount(){
         this.getData();
-        this.getUserInfo();
     }
 
     handleMenuClick(e){
@@ -82,18 +63,10 @@ class Home extends Component {
 
     render() { 
 
-        let menu;
-        if(this.userAvatar != null){
-            menu = <Menu.Item key={this.state.userName} icon={<Avatar src={this.state.userAvatar} shape="circle" />}  >{this.state.userName}</Menu.Item>
-        }else {
-            menu = <Menu.Item key={this.state.userName} icon={<UserOutlined />} >{this.state.userName}</Menu.Item>
-        }
-
         return ( 
             <div className="home">
                 <Menu onClick={this.handleMenuClick} selectedKeys={this.state.currentPage} mode="horizontal">
                     <Menu.Item key="Home" icon={<HomeOutlined />}>Home</Menu.Item>
-                    { menu }
                 </Menu>
                 {(this.state.data != null) ? <MusicSegment data={this.state.data} /> : <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />}/>}
             </div>
