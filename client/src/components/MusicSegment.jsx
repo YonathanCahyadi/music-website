@@ -11,10 +11,6 @@ class MusicSegment extends Component {
         data: []
      }
 
-    constructor(props){
-        super(props);
-    }
-
     componentDidMount(){
         let temp = [];
         this.props.data.map((t) => {
@@ -24,7 +20,8 @@ class MusicSegment extends Component {
                 description: t.artistName,
                 albumImages: t.artistImages,
                 previewUrl: t.previewUrl,
-                popularity: t.popularity
+                popularity: t.popularity,
+                lyric: t.lyric
             })
         })
 
@@ -55,11 +52,15 @@ class MusicSegment extends Component {
 
                         {(item.previewUrl != null) ? <audio controls src={item.previewUrl} /> : <Alert message="Sorry, preview for this track is not available." type="info" /> }
                         
-                            <Collapse>
+                        {(item.lyric != null) ?  
+                        <Collapse>
                                 <Panel header="Lyric" key={item.title}>
-                                    Lyric Placeholder
+                                    {item.lyric}
                                 </Panel>
-                            </Collapse>
+                            </Collapse> :
+                        <Alert message="Sorry, lyric for this track is not available." type="info" />
+                        }
+                           
                     </ List.Item>
                 )}
                 

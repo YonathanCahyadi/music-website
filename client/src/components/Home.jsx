@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 const axios = require('axios').default;
 
 
-const SERVER_URL = "http://localhost:3000/api/music";
+const SERVER_URL = "http://localhost:443/api/music";
 
 class Home extends Component {
 
@@ -38,7 +38,7 @@ class Home extends Component {
                 userInfo: res.data.info,
                 data: res.data.data
 
-           }, () => console.log(this.state.userInfo));
+           }, () => console.log(this.state.data));
            
         });
     }
