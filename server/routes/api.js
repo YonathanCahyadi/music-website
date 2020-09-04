@@ -113,19 +113,6 @@ router.get("/music", (req, res, next) => {
                   }));
                 }
 
-          //  // get user Info from spotify
-          //  const user_info_url = "https://api.spotify.com/v1/me";
-          //  let userName = null;
-          //  let userAvatar = null;
-          //  const requestUserInfo = axios.get(user_info_url, config)
-          //                               .then((user_res) => {
-          //                                 //console.log(user_res.data)
-          //                                 userName = user_res.data.display_name;
-          //                                 userAvatar = user_res.data.images[0].url;
-          //                                 //console.log(userName);
-          //                                 //console.log(userAvatar);
-          //                               })
-          //                               .catch((e) => res.status(400).send({"message": `${e}`})); // catch the error when getting the the user Info from Spotify
 
            // wait until finish getting all the lyric
            requestsLyric()
