@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { List, Collapse, Alert, Space } from 'antd';
-import { StarOutlined } from "@ant-design/icons";
-
+import { List, Collapse, Alert } from 'antd';
 import "./stylesheets/MusicSegment.css";
 
 const { Panel } = Collapse;

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import "./stylesheets/Login.css"
 import SpotifyLogo from './resources/spotify-logo.png';
 
-const SPOTIFY_CLIENT_ID = "86f3cd84bbeb49889050b07f94a47b81";
-const SERVER_CALLBACK_URL = "http://localhost:443/api/spotify/callback";
+const SPOTIFY_CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+const SERVER_CALLBACK_URL = process.env.REACT_APP_SERVER_CALLBACK_URL;
 
 
 // Construct the required URL
@@ -15,11 +15,12 @@ const authorization_url = "https://accounts.spotify.com/authorize?" +
 
 class Login extends Component {
 
+
     render() { 
         return ( 
             <div>
                 <div>
-                    <img className="image" src={SpotifyLogo} />
+                    <img className="image" alt="spotify-logo" src={SpotifyLogo} />
                 </div>
                 <div className="login-button">
                     <a className="button" href={authorization_url}> Login </a>

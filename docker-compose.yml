@@ -1,0 +1,32 @@
+version: "3"
+
+services: 
+    server:
+        build:
+            context: ./server
+        environment:
+            CLIENT_URL: "http://localhost:3000"
+            SERVER_CALLBACK_URL: "http://localhost:443/api/spotify/callback"
+            SPOTIFY_CLIENT_ID: "86f3cd84bbeb49889050b07f94a47b81"
+            SPOTIFY_SECRET: "e8c4be4bcaca46b887462ec45bd7839c"
+        expose: 
+            - "443"
+        ports: 
+            - "443:443"
+        command: npm start
+    client:
+        build:
+            context: ./client
+        environment: 
+            REACT_APP_SERVER_CALLBACK_URL: "http://localhost:443/api/spotify/callback"
+            REACT_APP_SERVER_MUSIC_URL: "http://localhost:443/api/music"
+            REACT_APP_SPOTIFY_CLIENT_ID: "86f3cd84bbeb49889050b07f94a47b81"
+            REACT_APP_SPOTIFY_SECRET: "e8c4be4bcaca46b887462ec45bd7839c"
+            
+        expose: 
+            - "3000"
+        ports: 
+            - "3000:3000"
+        stdin_open: true
+        tty: true
+        command: npm start

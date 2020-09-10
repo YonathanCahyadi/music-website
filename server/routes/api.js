@@ -8,7 +8,7 @@ const { info } = require('console');
 
 
 
-const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = process.env.CLIENT_URL;
 
 /*  Spotify DOCUMENTATION
   Authorization: https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-flows
@@ -17,9 +17,9 @@ const CLIENT_URL = "http://localhost:3000";
 
 
 // The Spotify REQUIRED var
-const SPOTIFY_CLIENT_ID = "86f3cd84bbeb49889050b07f94a47b81";
-const SPOTIFY_SECRET = "e8c4be4bcaca46b887462ec45bd7839c";
-const SERVER_CALLBACK_URL = "http://localhost:443/api/spotify/callback"
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
+const SERVER_CALLBACK_URL = process.env.SERVER_CALLBACK_URL;
 
 
 /* Spotify API */
@@ -112,20 +112,6 @@ router.get("/music", (req, res, next) => {
                     }); // catch the error when getting the lyric form the lyric.ovh API
                   }));
                 }
-
-          //  // get user Info from spotify
-          //  const user_info_url = "https://api.spotify.com/v1/me";
-          //  let userName = null;
-          //  let userAvatar = null;
-          //  const requestUserInfo = axios.get(user_info_url, config)
-          //                               .then((user_res) => {
-          //                                 //console.log(user_res.data)
-          //                                 userName = user_res.data.display_name;
-          //                                 userAvatar = user_res.data.images[0].url;
-          //                                 //console.log(userName);
-          //                                 //console.log(userAvatar);
-          //                               })
-          //                               .catch((e) => res.status(400).send({"message": `${e}`})); // catch the error when getting the the user Info from Spotify
 
            // wait until finish getting all the lyric
            requestsLyric()

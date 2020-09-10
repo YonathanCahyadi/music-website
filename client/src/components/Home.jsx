@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import MusicSegment from "./MusicSegment";
-import { Menu, Spin, Avatar } from "antd";
-import { HomeOutlined, LoadingOutlined, UserOutlined  } from "@ant-design/icons";
+import { Menu, Spin } from "antd";
+import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 const axios = require('axios').default;
 
 
-const SERVER_MUSIC_URL = "http://localhost:443/api/music";
+const SERVER_MUSIC_URL = process.env.REACT_APP_SERVER_MUSIC_URL;
 
 class Home extends Component {
 
@@ -14,7 +14,6 @@ class Home extends Component {
         super(props);
         this.state = {
             currentPage: "Home",
-            userAvatar: <UserOutlined /> ,
             userInfo: null,
             userName: null,
             userAvatar: null,
@@ -42,7 +41,7 @@ class Home extends Component {
            this.setState({
                 data: res.data.data
 
-           }, () => console.log(this.state.data));
+           });
            
         });
     }
