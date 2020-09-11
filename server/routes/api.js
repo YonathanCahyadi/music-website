@@ -3,8 +3,7 @@ var router = express.Router();
 var Promise = require('promise');
 const axios = require('axios').default;
 const querystring = require('querystring');
-const { response } = require('express');
-const { info } = require('console');
+
 
 
 
@@ -23,7 +22,6 @@ const SERVER_CALLBACK_URL = process.env.SERVER_CALLBACK_URL;
 
 
 /* Spotify API */
-
 router.get("/spotify/callback", (req, res, next) => {
   const { code, error } = req.query;
 
@@ -63,12 +61,13 @@ router.get("/spotify/callback", (req, res, next) => {
 
 
 router.get("/music", (req, res, next) => {
-  if(req.query.access_token != undefined){
-    
 
+  if(req.query.access_token != undefined){
+    let seed = "4NHQUGzhtTLFvgF5SZesLK";
+  
     // constructing the GET Spotify music recommendation URL
     const url = "https://api.spotify.com/v1/recommendations?" + 
-                "seed_artists=" + "4NHQUGzhtTLFvgF5SZesLK";
+                "seed_artists=" + seed;
 
 
     // constructing the required headers for making the call to the Spotify API
@@ -101,10 +100,8 @@ router.get("/music", (req, res, next) => {
                      // Check if lyric is found
                      if(lyric_res.data.lyrics != undefined){ 
                         lyrics.push(lyric_res.data.lyrics);
-                        //console.log(lyric_res.data.lyrics);
                      }else{
                        lyrics.push(null);
-                       //console.log(lyric_res.data.error);
                      }
                     })
                    .catch((e) => { 
@@ -118,10 +115,6 @@ router.get("/music", (req, res, next) => {
                   .then(() => {
                     // making the data to be sended to the client
                     let response = {};
-                    let info = {
-                      // userName: userName,
-                      // userAvatar: userAvatar
-                    }
                     let data = [];
                     spotify_res.data.tracks.map((t, i) => {
                       data[i] = {
@@ -136,7 +129,6 @@ router.get("/music", (req, res, next) => {
                     });
 
                     response = {
-                      info: info,
                       data: data
                     }
                     
