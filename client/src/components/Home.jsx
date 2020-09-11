@@ -19,29 +19,18 @@ class Home extends Component {
             currentPage: "Home",
             pageStatus: true,
             data: null,
-            translatedLanguage: "Bahasa Indonesia"
+            translatedLanguage: "Bahasa Indonesia",
+            translatedLanguageKey: "id"
         };
 
         this.handleRefreshButton = this.handleRefreshButton.bind(this);
+        this.handleLanguage = this.handleLanguage.bind(this);
     }
-
-    // // make a random string based on the len
-    // randomSeed(len) {
-    //     const string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-    //     let seed = '';
-    //     for (let i = 0; i < len; i++) {
-    //         seed += string[Math.floor(Math.random() * string.length)];
-    //     }
-    //     return seed;
-    // }
 
 
     // get the data from the server side
     getData() {
         // construct the required parameters for the server side
-        // GET request
-        // let seed = this.randomSeed(22);
-
         const config = {
             params: {
                 access_token: this.props.access_token,
@@ -91,6 +80,14 @@ class Home extends Component {
         })
     }
 
+    handleLanguage(value, key){
+        console.log(value)
+        console.log(key.key)
+        this.setState({
+            translatedLanguage: value
+        })
+    }
+
     render() {
         let page = <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />;
         if (this.state.pageStatus === false) {
@@ -103,7 +100,8 @@ class Home extends Component {
                 <Menu selectedKeys={this.state.currentPage} mode="horizontal">
                     <Menu.Item key="Home" icon={<HomeOutlined />}>Home</Menu.Item>
                     <Button type="primary" onClick={this.handleRefreshButton}>Refresh Recommendation</Button>
-                    <Select>
+                    {/* Language Selection for Lyric */}
+                    <Select defaultValue={this.state.translatedLanguage} style={{ width: 120, paddingLeft: "20px" }} onChange={this.handleLanguage}>
                         {supportedLang.data.map((lang) => {
                             return <Option value={lang.name} key={lang.code}>{lang.name}</Option>
                         })}
