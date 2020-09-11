@@ -1,77 +1,120 @@
 import React, { Component } from 'react';
 import MusicSegment from "./MusicSegment";
-import { Menu, Spin, Avatar } from "antd";
-import { HomeOutlined, LoadingOutlined, UserOutlined  } from "@ant-design/icons";
+import { Menu, Spin, Button, Select } from "antd";
+import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 const axios = require('axios').default;
+const supportedLang = require('./resources/SupportedLanguage.json');
 
 
-const SERVER_MUSIC_URL = "http://localhost:443/api/music";
+const SERVER_MUSIC_URL = process.env.REACT_APP_SERVER_MUSIC_URL;
+
+const { Option } = Select;
 
 class Home extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             currentPage: "Home",
-            userAvatar: <UserOutlined /> ,
-            userInfo: null,
-            userName: null,
-            userAvatar: null,
-            data: null
+            pageStatus: true,
+            data: null,
+            translatedLanguage: "Bahasa Indonesia"
         };
 
-        this.handleMenuClick = this.handleMenuClick.bind(this);
-
+        this.handleRefreshButton = this.handleRefreshButton.bind(this);
     }
 
+    // // make a random string based on the len
+    // randomSeed(len) {
+    //     const string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    //     let seed = '';
+    //     for (let i = 0; i < len; i++) {
+    //         seed += string[Math.floor(Math.random() * string.length)];
+    //     }
+    //     return seed;
+    // }
+
+
     // get the data from the server side
-    getData(){
+    getData() {
         // construct the required parameters for the server side
         // GET request
-        const config = { 
+        // let seed = this.randomSeed(22);
+
+        const config = {
             params: {
                 access_token: this.props.access_token,
-                refresh_token: this.props.refresh_token
+                refresh_token: this.props.refresh_token,
             }
         }
 
+        // request data from the server
         axios.get(SERVER_MUSIC_URL, config)
-        .then((res) => {
-
-           this.setState({
-                data: res.data.data
-
-           }, () => console.log(this.state.data));
-           
-        });
+            .then((res) => {
+                if (res.status === 400) { // if someting went wrong
+                    this.setState({
+                        pageStatus: false
+                    })
+                } else { // if everythins is OK
+                    // store the data in the session storage
+                    sessionStorage.setItem("music-data", JSON.stringify(res.data.data))
+                    // store the data in the state
+                    this.setState({
+                        data: res.data.data,
+                    });
+                }
+            });
     }
 
 
     // make an API call
-    componentDidMount(){
-        this.getData();
+    componentDidMount() {
+        // check the session storage
+        let data = sessionStorage.getItem("music-data");
+        if (data) {
+            this.setState({
+                data: JSON.parse(data)
+            });
+        } else {
+            this.getData();
+        }
     }
 
-    handleMenuClick(e){
+
+
+    handleRefreshButton() {
         this.setState({
-            currentPage: e.key
-        });
+            data: null
+        }, () => {
+            this.getData();
+        })
     }
 
-    
+    render() {
+        let page = <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />;
+        if (this.state.pageStatus === false) {
+            page = <p>Oops, somethings went wrong ...</p>;
+        }
 
-    render() { 
-
-        return ( 
+        return (
             <div className="home">
-                <Menu onClick={this.handleMenuClick} selectedKeys={this.state.currentPage} mode="horizontal">
+                {/* Menubar */}
+                <Menu selectedKeys={this.state.currentPage} mode="horizontal">
                     <Menu.Item key="Home" icon={<HomeOutlined />}>Home</Menu.Item>
+                    <Button type="primary" onClick={this.handleRefreshButton}>Refresh Recommendation</Button>
+                    <Select>
+                        {supportedLang.data.map((lang) => {
+                            return <Option value={lang.name} key={lang.code}>{lang.name}</Option>
+                        })}
+                    </Select>
                 </Menu>
-                {(this.state.data != null) ? <MusicSegment data={this.state.data} /> : <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />}/>}
+
+                {/* Content */}
+                {((this.state.data !== null) && (this.state.pageStatus !== false)) ? <MusicSegment data={this.state.data} translatedLanguage={this.state.translatedLanguage} /> : page}
             </div>
-         );
+        );
     }
 }
- 
+
 export default Home;

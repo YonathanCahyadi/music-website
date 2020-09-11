@@ -1,0 +1,20 @@
+# set node ver erbium as the base images
+FROM node:erbium
+
+# set the working dir to /server
+WORKDIR /server
+
+# copy the pakage.json file
+COPY package*.json /server/
+
+# install dependency
+RUN npm install
+
+# copy the current dir to the container /server
+COPY . /server/
+
+# Make port 443 available for world outside this container
+EXPOSE 443
+
+# run the app when the container launch
+CMD ["npm", "start"]

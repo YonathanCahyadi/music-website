@@ -3,12 +3,11 @@ var router = express.Router();
 var Promise = require('promise');
 const axios = require('axios').default;
 const querystring = require('querystring');
-const { response } = require('express');
-const { info } = require('console');
 
 
 
-const CLIENT_URL = "http://localhost:3000";
+
+const CLIENT_URL = process.env.CLIENT_URL;
 
 /*  Spotify DOCUMENTATION
   Authorization: https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-flows
@@ -17,13 +16,12 @@ const CLIENT_URL = "http://localhost:3000";
 
 
 // The Spotify REQUIRED var
-const SPOTIFY_CLIENT_ID = "86f3cd84bbeb49889050b07f94a47b81";
-const SPOTIFY_SECRET = "e8c4be4bcaca46b887462ec45bd7839c";
-const SERVER_CALLBACK_URL = "http://localhost:443/api/spotify/callback"
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
+const SERVER_CALLBACK_URL = process.env.SERVER_CALLBACK_URL;
 
 
 /* Spotify API */
-
 router.get("/spotify/callback", (req, res, next) => {
   const { code, error } = req.query;
 
@@ -63,12 +61,13 @@ router.get("/spotify/callback", (req, res, next) => {
 
 
 router.get("/music", (req, res, next) => {
-  if(req.query.access_token != undefined){
-    
 
+  if(req.query.access_token != undefined){
+    let seed = "4NHQUGzhtTLFvgF5SZesLK";
+  
     // constructing the GET Spotify music recommendation URL
     const url = "https://api.spotify.com/v1/recommendations?" + 
-                "seed_artists=" + "4NHQUGzhtTLFvgF5SZesLK";
+                "seed_artists=" + seed;
 
 
     // constructing the required headers for making the call to the Spotify API
@@ -101,10 +100,8 @@ router.get("/music", (req, res, next) => {
                      // Check if lyric is found
                      if(lyric_res.data.lyrics != undefined){ 
                         lyrics.push(lyric_res.data.lyrics);
-                        //console.log(lyric_res.data.lyrics);
                      }else{
                        lyrics.push(null);
-                       //console.log(lyric_res.data.error);
                      }
                     })
                    .catch((e) => { 
@@ -113,16 +110,11 @@ router.get("/music", (req, res, next) => {
                   }));
                 }
 
-
            // wait until finish getting all the lyric
            requestsLyric()
                   .then(() => {
                     // making the data to be sended to the client
                     let response = {};
-                    let info = {
-                      // userName: userName,
-                      // userAvatar: userAvatar
-                    }
                     let data = [];
                     spotify_res.data.tracks.map((t, i) => {
                       data[i] = {
@@ -137,7 +129,6 @@ router.get("/music", (req, res, next) => {
                     });
 
                     response = {
-                      info: info,
                       data: data
                     }
                     
