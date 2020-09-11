@@ -29,11 +29,6 @@ class MusicSegment extends Component {
         })
     }
 
-    handleLanguages(value){
-        this.setState({
-            translatedLanguages: value
-        })
-    }
 
     render() {
         return (
@@ -66,7 +61,7 @@ class MusicSegment extends Component {
                                                 </Card>
                                             </Col>
                                             <Col span={12}>
-                                                <Card title={this.props.translatedLanguages} bordered={false}>
+                                                <Card title={this.props.translatedLanguage} bordered={false}>
                                                     Card content
                                                 </Card>
                                             </Col>

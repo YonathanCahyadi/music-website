@@ -1,0 +1,6 @@
+Spin.Loading {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    display: none;
+}
