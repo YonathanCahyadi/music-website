@@ -15,3 +15,10 @@ h2 {
 h2 a {
     color: black;
 }
+
+Spin.Loading{
+    height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}

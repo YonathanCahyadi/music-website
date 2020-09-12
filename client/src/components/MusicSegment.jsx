@@ -12,11 +12,17 @@ class MusicSegment extends Component {
     }
 
     componentDidMount() {
+        this.mapData();
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.translatedLyric != prevProps.translatedLyric){
+            this.mapData();
+        }
+    }
+
+    mapData(){
         let temp = [];
-
-
-
-        
         this.props.data.map((t, i) => {
             temp.push({
                 title: t.songTitle,
@@ -34,7 +40,6 @@ class MusicSegment extends Component {
             data: temp
         })
     }
-
 
     render() {
         return (

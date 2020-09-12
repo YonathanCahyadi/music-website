@@ -18,8 +18,8 @@ class Home extends Component {
         currentPage: "Home",
         pageStatus: true,
         data: null,
-        translatedLanguage: "Bahasa Indonesia",
-        translatedLanguageKey: "id",
+        translatedLanguage: sessionStorage.getItem("translated-language") ? sessionStorage.getItem("translated-language") : "Bahasa Indonesia",
+        translatedLanguageKey: sessionStorage.getItem("translated-language-key") ? sessionStorage.getItem("translated-language-key") : "id",
         translatedLyricLoading: true,
         translatedLyric: null
     };
@@ -36,15 +36,12 @@ class Home extends Component {
         // check the session storage
         let data = sessionStorage.getItem("music-data");
         let translatedLyric = sessionStorage.getItem("music-translated-lyric");
-        let translatedLanguage = sessionStorage.getItem("translated-language");
-        let translatedLanguageKey = sessionStorage.getItem("translated-language-key");
 
-        if (data && translatedLyric && translatedLanguage && translatedLanguageKey) { // use data form the session
+
+        if (data && translatedLyric) { // use data form the session
             this.setState({
                 data: JSON.parse(data),
                 translatedLyric: JSON.parse(translatedLyric),
-                translatedLanguage: translatedLanguage,
-                translatedLanguageKey: translatedLanguageKey,
                 translatedLyricLoading: false
             });
         } else { // get the data from the server
@@ -163,7 +160,7 @@ class Home extends Component {
                 </Menu>
 
                 {/* Content */}
-                {((this.state.data !== null) && (this.state.translatedLyric !== null) && (this.state.pageStatus !== false)) ?
+                {((this.state.data !== null) && (this.state.pageStatus !== false)) ?
                     <MusicSegment data={this.state.data} translatedLanguage={this.state.translatedLanguage} translatedLyric={this.state.translatedLyric} translatedLyricLoading={this.state.translatedLyricLoading} /> : page}
             </div>
         );

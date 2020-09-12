@@ -8,16 +8,16 @@ const SERVER_CALLBACK_URL = process.env.REACT_APP_SERVER_CALLBACK_URL;
 
 // Construct the required URL
 const authorization_url = "https://accounts.spotify.com/authorize?" +
-"client_id=" + SPOTIFY_CLIENT_ID +
-"&response_type=code" +
-"&redirect_uri=" + SERVER_CALLBACK_URL;
+    "client_id=" + SPOTIFY_CLIENT_ID +
+    "&response_type=code" +
+    "&redirect_uri=" + SERVER_CALLBACK_URL;
 
 
 class Login extends Component {
 
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <div>
                 <div>
                     <img className="image" alt="spotify-logo" src={SpotifyLogo} />
@@ -26,8 +26,8 @@ class Login extends Component {
                     <a className="button" href={authorization_url}> Login </a>
                 </div>
             </div>
-         );
+        );
     }
 }
- 
+
 export default Login;

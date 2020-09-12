@@ -1,6 +1,6 @@
 Spin.Loading {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    display: none;
+    height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center
 }
