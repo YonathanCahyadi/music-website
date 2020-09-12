@@ -55,19 +55,15 @@ class Home extends Component {
         // construct the required parameters for the server side
         const config = {
             params: {
-                access_token: this.props.access_token,
-                refresh_token: this.props.refresh_token,
+                access_token: this.props.access_token
             }
         }
 
         // request data from the server
         return axios.get(SERVER_MUSIC_URL, config)
             .then((res) => {
-                if (res.status === 400) { // if someting went wrong
-                    this.setState({
-                        pageStatus: false
-                    })
-                } else { // if everythings is OK
+                if (res.status === 200) {// if everythings is OK
+
                     // get lyric translation
                     this.getTranslationAndSave(res.data.data);
                     // store the data in the session storage
@@ -76,6 +72,11 @@ class Home extends Component {
                     this.setState({
                         data: res.data.data
                     });
+                    
+                } else { // if something went wrong
+                    this.setState({
+                        pageStatus: false
+                    })
 
                 }
             })

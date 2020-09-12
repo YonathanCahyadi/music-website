@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
+import { Button } from 'antd';
 import "./stylesheets/Login.css"
 import SpotifyLogo from './resources/spotify-logo.png';
 
-const SPOTIFY_CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const SERVER_CALLBACK_URL = process.env.REACT_APP_SERVER_CALLBACK_URL;
 
 
-// Construct the required URL
-const authorization_url = "https://accounts.spotify.com/authorize?" +
-    "client_id=" + SPOTIFY_CLIENT_ID +
-    "&response_type=code" +
-    "&redirect_uri=" + SERVER_CALLBACK_URL;
 
 
 class Login extends Component {
 
+    constructor() {
+        super();
+        this.handleButtonClick = this.handleButtonClick.bind(this);
+    }
+
+    handleButtonClick() {
+        // Construct the required URL
+        const AUTHORIZATION_URL = "https://accounts.spotify.com/authorize?" +
+            "client_id=" + this.props.client_id +
+            "&response_type=code" +
+            "&redirect_uri=" + this.props.callback_url;
+        
+        // redirect to spotify login page
+        window.location.href = AUTHORIZATION_URL;
+    }
 
     render() {
         return (
@@ -23,7 +32,7 @@ class Login extends Component {
                     <img className="image" alt="spotify-logo" src={SpotifyLogo} />
                 </div>
                 <div className="login-button">
-                    <a className="button" href={authorization_url}> Login </a>
+                    <Button type="primary" onClick={this.handleButtonClick}>Login</Button>
                 </div>
             </div>
         );
