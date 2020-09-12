@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { List, Collapse, Alert, Card, Col, Row } from 'antd';
+import { List, Collapse, Alert, Card, Col, Row, Spin } from 'antd';
+import { LoadingOutlined } from "@ant-design/icons";
 import "./stylesheets/MusicSegment.css";
 
 const { Panel } = Collapse;
@@ -12,7 +13,11 @@ class MusicSegment extends Component {
 
     componentDidMount() {
         let temp = [];
-        this.props.data.map((t) => {
+
+
+
+        
+        this.props.data.map((t, i) => {
             temp.push({
                 title: t.songTitle,
                 songUrl: t.songUrl,
@@ -20,7 +25,8 @@ class MusicSegment extends Component {
                 albumImages: t.artistImages,
                 previewUrl: t.previewUrl,
                 popularity: t.popularity,
-                lyric: t.lyric
+                lyric: t.lyric,
+                translatedLyric: (this.props.translatedLyric !== null) ? this.props.translatedLyric[i] : <Spin className="Loading" indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />
             })
         })
 
@@ -62,7 +68,7 @@ class MusicSegment extends Component {
                                             </Col>
                                             <Col span={12}>
                                                 <Card title={this.props.translatedLanguage} bordered={false}>
-                                                    Card content
+                                                    { (this.props.translatedLyricLoading !== true) ? item.translatedLyric : <Spin className="Loading" indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />}
                                                 </Card>
                                             </Col>
                                         </Row>

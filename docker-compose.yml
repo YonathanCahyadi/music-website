@@ -22,6 +22,7 @@ services:
             REACT_APP_SERVER_MUSIC_URL: "http://localhost:443/api/music"
             REACT_APP_SPOTIFY_CLIENT_ID: "86f3cd84bbeb49889050b07f94a47b81"
             REACT_APP_SPOTIFY_SECRET: "e8c4be4bcaca46b887462ec45bd7839c" 
+            REACT_APP_TRANSLATE_API_KEY: "AIzaSyAJtm7VTg_tu-NzjXgdlXMky1yrIZNFqZM"
         expose: 
             - "3000"
         ports: 
