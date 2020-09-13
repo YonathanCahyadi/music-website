@@ -12,16 +12,18 @@ class MusicSegment extends Component {
     }
 
     componentDidMount() {
+        // map the data with the current provided information
         this.mapData();
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.translatedLyric != prevProps.translatedLyric){
+    componentDidUpdate(prevProps) {
+        // check if trasnslated lyric is already provided
+        if (this.props.translatedLyric != prevProps.translatedLyric) {
             this.mapData();
         }
     }
 
-    mapData(){
+    mapData() {
         let temp = [];
         this.props.data.map((t, i) => {
             temp.push({
@@ -73,7 +75,7 @@ class MusicSegment extends Component {
                                             </Col>
                                             <Col span={12}>
                                                 <Card title={this.props.translatedLanguage} bordered={false}>
-                                                    { (this.props.translatedLyricLoading !== true) ? item.translatedLyric : <Spin className="Loading" indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />}
+                                                    {(this.props.translatedLyricLoading !== true) ? item.translatedLyric : <Spin className="Loading" indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />}
                                                 </Card>
                                             </Col>
                                         </Row>

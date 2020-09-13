@@ -4,11 +4,13 @@ import { Menu, Spin, Button, Select } from "antd";
 import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "./stylesheets/Home.css";
+import Error from './Error';
 const axios = require('axios').default;
 const supportedLang = require('./resources/SupportedLanguage.json');
 
 
 const SERVER_MUSIC_URL = process.env.REACT_APP_SERVER_MUSIC_URL;
+const CALLBACK_URL = process.env.REACT_APP_CALLBACK_URL;
 
 const { Option } = Select;
 
@@ -38,7 +40,7 @@ class Home extends Component {
         let translatedLyric = sessionStorage.getItem("music-translated-lyric");
 
 
-        if (data && translatedLyric) { // use data form the session
+        if (data && translatedLyric) { // use data from the session
             this.setState({
                 data: JSON.parse(data),
                 translatedLyric: JSON.parse(translatedLyric),
@@ -122,7 +124,8 @@ class Home extends Component {
         })
     }
 
-    // this function 
+    // this function will handle the language change
+    // will update the selected language and get a new translation 
     handleLanguageChange(value, { key }) {
         // update the session storage
         sessionStorage.setItem("translated-language", value);
@@ -141,9 +144,11 @@ class Home extends Component {
     }
 
     render() {
+        // show page only if everything is OK
+        // if something is wrong show the Error Page
         let page = <Spin className="Loading" indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />;
         if (this.state.pageStatus === false) {
-            page = <p>Oops, somethings went wrong ...</p>;
+            page = <Error comeback_url={CALLBACK_URL} />;
         }
 
         return (

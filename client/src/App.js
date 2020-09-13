@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Login from "./components/Login";
 import Home from "./components/Home";
+import Error from "./components/Error";
 
 const axios = require('axios');
 
@@ -22,8 +23,6 @@ class App extends Component {
 
   constructor() {
     super();
-
-
   }
 
   componentDidMount() {
@@ -31,17 +30,20 @@ class App extends Component {
     // Get the of the url param
     const urlParams = new URLSearchParams(window.location.search);
     let code = urlParams.get("code");
+    // check if access token is already in the session storeage
     let access_token = sessionStorage.getItem('access-token');
-    if (access_token) {
+    if (access_token) { // if already exist set the state to the existing access token
       this.setState({
         access_token: access_token
       })
-    }else{
+    } else { // else get the access token from the spotify API
       this.getAccessToken(code);
     }
   }
 
+  // function to get the access token from the sportify API
   getAccessToken(code) {
+    // contruct the necesarry information
     const token_url = "https://accounts.spotify.com/api/token?" +
       "grant_type=authorization_code" +
       "&code=" + code +
@@ -66,7 +68,7 @@ class App extends Component {
           this.setState({
             access_token: access_token,
             refresh_token: refresh_token
-          }, () =>{
+          }, () => {
             window.location.search = '';
           })
         } else {
@@ -85,7 +87,9 @@ class App extends Component {
 
 
   render() {
-    let page = <p>Error ...</p>
+    // only show the Home Page if everything is OK
+    // If somethings gone wrong show the Error Page
+    let page = <Error comeback_url={CALLBACK_URL} />
     if ((this.state.pageStatus === true) && (this.state.access_token !== null)) {
       page = <Home access_token={this.state.access_token} refresh_token={this.state.refresh_token} />
     }
