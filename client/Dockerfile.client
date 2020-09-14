@@ -10,6 +10,10 @@ COPY package*.json /client/
 # install dependency
 RUN npm install
 
+ENV REACT_APP_SPOTIFY_CLIENT_ID="86f3cd84bbeb49889050b07f94a47b81"
+ENV REACT_APP_SPOTIFY_SECRET="e8c4be4bcaca46b887462ec45bd7839c" 
+ENV REACT_APP_TRANSLATE_API_KEY=""
+
 # copy the current dir to the container /client
 COPY . /client/
 

@@ -9,8 +9,8 @@ const axios = require('axios').default;
 const supportedLang = require('./resources/SupportedLanguage.json');
 
 
-const SERVER_MUSIC_URL = process.env.REACT_APP_SERVER_MUSIC_URL;
-const CALLBACK_URL = process.env.REACT_APP_CALLBACK_URL;
+const SERVER_MUSIC_URL = process.env.REACT_APP_SERVER_URL;
+const CALLBACK_URL = process.env.REACT_APP_URL;
 
 const { Option } = Select;
 
@@ -62,7 +62,7 @@ class Home extends Component {
         }
 
         // request data from the server
-        return axios.get(SERVER_MUSIC_URL, config)
+        return axios.get(SERVER_MUSIC_URL + "/api/music", config)
             .then((res) => {
                 if (res.status === 200) {// if everythings is OK
                     // get lyric translation

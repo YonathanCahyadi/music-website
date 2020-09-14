@@ -8,7 +8,7 @@ const axios = require('axios');
 
 const SPOTIFY_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 const SPOTIFY_CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const CALLBACK_URL = process.env.REACT_APP_CALLBACK_URL;
+const CALLBACK_URL = process.env.REACT_APP_URL;
 
 
 
