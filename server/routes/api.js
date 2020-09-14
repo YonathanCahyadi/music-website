@@ -96,7 +96,7 @@ router.get("/music", (req, res, next) => {
       });
 
   } else {
-    res.status(400).res({ "message": "Invalid access_token" });
+    res.status(400).send({ "message": "Invalid access_token" });
   }
 });
 

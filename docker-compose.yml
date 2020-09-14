@@ -3,7 +3,9 @@ version: "3"
 services: 
     server:
         build:
-            context: ./source-code/server
+            context: ./server
+            dockerfile: Dockerfile.server
+        image: yonathancahyadi/music-website:server
         expose: 
             - "443"
         ports: 
@@ -11,7 +13,9 @@ services:
         command: npm start
     client:
         build:
-            context: ./source-code/client
+            context: ./client
+            dockerfile: Dockerfile.client
+        image: yonathancahyadi/music-website:client
         environment: 
             REACT_APP_CALLBACK_URL: "http://localhost:3000"
             REACT_APP_SERVER_MUSIC_URL: "http://localhost:443/api/music"
