@@ -86,12 +86,13 @@ router.get("/music", (req, res, next) => {
           }).then((response) => {
             // send the constructed response to the client
             res.status(200).send(response);
+          }).catch((err) => {
+            res.status(400).send({ "message": err });
           })
 
       })
-
-      .catch((e) => { // catch the error when getting the data from Spotify API
-        res.status(400).send({ "message": `${e}` })
+      .catch((err) => { // catch the error when getting the data from Spotify API
+        res.status(400).send({ "message": err })
       });
 
   } else {

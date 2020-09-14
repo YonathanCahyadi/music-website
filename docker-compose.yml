@@ -3,7 +3,7 @@ version: "3"
 services: 
     server:
         build:
-            context: ./server
+            context: ./source-code/server
         expose: 
             - "443"
         ports: 
@@ -11,7 +11,7 @@ services:
         command: npm start
     client:
         build:
-            context: ./client
+            context: ./source-code/client
         environment: 
             REACT_APP_CALLBACK_URL: "http://localhost:3000"
             REACT_APP_SERVER_MUSIC_URL: "http://localhost:443/api/music"

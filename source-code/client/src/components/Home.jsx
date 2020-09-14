@@ -40,7 +40,7 @@ class Home extends Component {
         let translatedLyric = sessionStorage.getItem("music-translated-lyric");
 
 
-        if (data && translatedLyric) { // use data from the session
+        if (data && translatedLyric) { // use data from the session store age
             this.setState({
                 data: JSON.parse(data),
                 translatedLyric: JSON.parse(translatedLyric),
@@ -65,7 +65,6 @@ class Home extends Component {
         return axios.get(SERVER_MUSIC_URL, config)
             .then((res) => {
                 if (res.status === 200) {// if everythings is OK
-
                     // get lyric translation
                     this.getTranslationAndSave(res.data.data);
                     // store the data in the session storage
@@ -92,7 +91,7 @@ class Home extends Component {
         const TRANSLATE_API_KEY = process.env.REACT_APP_TRANSLATE_API_KEY;
         const URL_TRANSLATE = `https://translation.googleapis.com/language/translate/v2?target=${this.state.translatedLanguageKey}&key=${TRANSLATE_API_KEY}&q=`;
 
-        return Promise.all(data.map((d) => {
+        return Promise.all(data.map((d) => { // get the translated lyric async
             return axios.get(URL_TRANSLATE + encodeURI(d.lyric)).then(({ data }) =>
                 data.data.translations[0].translatedText
             )
@@ -103,7 +102,7 @@ class Home extends Component {
     getTranslationAndSave(data) {
         this.getTranslation(data) // get the new lyric translation
             .then((translatedLyric) => {
-                // set the new translated lyric
+                // set and store the new translated lyric
                 sessionStorage.setItem("music-translated-lyric", JSON.stringify(translatedLyric));
                 this.setState({
                     translatedLyric: translatedLyric,

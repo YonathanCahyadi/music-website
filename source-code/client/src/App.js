@@ -60,9 +60,9 @@ class App extends Component {
     // get the access token and refresh token
     axios.post(token_url, null, headers)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 200) { // If everythings is fine
           const { access_token, refresh_token } = response.data;
-          // store the access token
+          // store the access token and refresh token
           sessionStorage.setItem("access-token", access_token);
           sessionStorage.setItem("refresh-token", refresh_token);
           this.setState({
@@ -71,12 +71,12 @@ class App extends Component {
           }, () => {
             window.location.search = '';
           })
-        } else {
+        } else { // If there is something wrong with Spotify API response
           this.setState({
             pageStatus: false
           })
         }
-      }).catch((e) => { // if there is an error
+      }).catch((e) => { // if there is an error when getting the response form the Spotify API
         this.setState({
           pageStatus: false
         })
@@ -96,6 +96,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        {/** Take user to the Home page only if user already authenticated */}
         {(this.state.access_token === null) ?
           <Login client_id={SPOTIFY_CLIENT_ID} callback_url={CALLBACK_URL} /> : page
         }
