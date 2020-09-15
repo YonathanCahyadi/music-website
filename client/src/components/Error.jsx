@@ -18,7 +18,7 @@ class Error extends Component {
     render() { 
         return ( 
             <div className="Error-container">
-                <p>Somethings went wrong...</p>
+                <h3>Somethings went wrong...</h3>
                 <Button  type="primary" onClick={this.handleButtonClick}>Go Back</Button>
             </div>
          );

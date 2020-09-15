@@ -5,7 +5,7 @@ FROM node:erbium
 WORKDIR /client
 
 # copy the pakage.json file
-COPY package*.json /client/
+COPY ./client/package*.json /client/
 
 # install dependency
 RUN npm install
@@ -15,7 +15,7 @@ ENV REACT_APP_SPOTIFY_SECRET="e8c4be4bcaca46b887462ec45bd7839c"
 ENV REACT_APP_TRANSLATE_API_KEY="AIzaSyBNcpk30gUKFsG1AEiJFYhwhkXGKPKEiFo"
 
 # copy the current dir to the container /client
-COPY . /client/
+COPY ./client/ /client/
 
 # Make port 3000 available for world outside this container
 EXPOSE 3000

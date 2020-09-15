@@ -3,7 +3,7 @@ version: "3"
 services: 
     server:
         build:
-            context: ./server
+            context: .
             dockerfile: Dockerfile.server
         image: yonathancahyadi/music-website:server
         expose: 
@@ -13,7 +13,7 @@ services:
         command: npm start
     client:
         build:
-            context: ./client
+            context: .
             dockerfile: Dockerfile.client
         image: yonathancahyadi/music-website:client
         environment: 

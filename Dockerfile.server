@@ -5,13 +5,13 @@ FROM node:erbium
 WORKDIR /server
 
 # copy the pakage.json file
-COPY package*.json /server/
+COPY ./server/package*.json /server/
 
 # install dependency
 RUN npm install
 
 # copy the current dir to the container /server
-COPY . /server/
+COPY ./server/ /server/
 
 # Make port 443 available for world outside this container
 EXPOSE 443

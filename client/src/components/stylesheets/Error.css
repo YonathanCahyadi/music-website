@@ -1,6 +1,7 @@
 div.Error-container {
-    height: 10em;
-    display: flex;
-    align-items: center;
-    justify-content: center
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
 }

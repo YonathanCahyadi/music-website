@@ -96,10 +96,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        {/** Take user to the Home page only if user already authenticated */}
-        {(this.state.access_token === null) ?
-          <Login client_id={SPOTIFY_CLIENT_ID} callback_url={CALLBACK_URL} /> : page
-        }
+       <Error comeback_url={CALLBACK_URL} />
       </div>
     );
   }
