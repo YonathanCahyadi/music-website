@@ -18,7 +18,7 @@ class MusicSegment extends Component {
 
     componentDidUpdate(prevProps) {
         // check if trasnslated lyric is already provided
-        if (this.props.translatedLyric != prevProps.translatedLyric) {
+        if (this.props.translatedLyric !== prevProps.translatedLyric) {
             this.mapData();
         }
     }

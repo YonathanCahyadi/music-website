@@ -21,9 +21,6 @@ class App extends Component {
     pageStatus: true
   }
 
-  constructor() {
-    super();
-  }
 
   componentDidMount() {
 
@@ -96,7 +93,10 @@ class App extends Component {
 
     return (
       <div className="App">
-       <Error comeback_url={CALLBACK_URL} />
+       {/** Take user to the Home Page only if user already authenticated */}
+       {(this.state.access_token === null) ? 
+          <Login client_id={SPOTIFY_CLIENT_ID} callback_url={CALLBACK_URL} /> : page 
+        }
       </div>
     );
   }
