@@ -1,0 +1,31 @@
+version: "3"
+
+services: 
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile.server
+        image: yonathancahyadi/music-website:server
+        expose: 
+            - "443"
+        ports: 
+            - "443:443"
+        command: npm start
+    client:
+        build:
+            context: .
+            dockerfile: Dockerfile.client
+        image: yonathancahyadi/music-website:client
+        environment: 
+            REACT_APP_URL: 'http://localhost:3000'
+            REACT_APP_SERVER_URL: "http://localhost:443"
+            REACT_APP_SPOTIFY_CLIENT_ID: "86f3cd84bbeb49889050b07f94a47b81"
+            REACT_APP_SPOTIFY_SECRET: "e8c4be4bcaca46b887462ec45bd7839c" 
+            REACT_APP_TRANSLATE_API_KEY: "AIzaSyBNcpk30gUKFsG1AEiJFYhwhkXGKPKEiFo"
+        expose: 
+            - "3000"
+        ports: 
+            - "3000:3000"
+        stdin_open: true
+        tty: true
+        command: npm start

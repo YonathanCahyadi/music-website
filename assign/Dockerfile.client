@@ -1,0 +1,24 @@
+# set node ver erbium as the base images
+FROM node:erbium
+
+# set the working dir to /client
+WORKDIR /client
+
+# copy the pakage.json file
+COPY ./client/package*.json /client/
+
+# install dependency
+RUN npm install
+
+ENV REACT_APP_SPOTIFY_CLIENT_ID="86f3cd84bbeb49889050b07f94a47b81"
+ENV REACT_APP_SPOTIFY_SECRET="e8c4be4bcaca46b887462ec45bd7839c" 
+ENV REACT_APP_TRANSLATE_API_KEY="AIzaSyBNcpk30gUKFsG1AEiJFYhwhkXGKPKEiFo"
+
+# copy the current dir to the container /client
+COPY ./client/ /client/
+
+# Make port 3000 available for world outside this container
+EXPOSE 3000
+
+# run the app when the container launch
+CMD ["npm", "start"]

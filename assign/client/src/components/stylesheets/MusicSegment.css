@@ -1,0 +1,24 @@
+audio {
+    width: 100%;
+}
+
+p {
+    text-align: left;
+    padding-left: 20px;
+}
+
+h2 {
+    text-align: left;
+    padding-left: 20px;
+}
+
+h2 a {
+    color: black;
+}
+
+Spin.Loading{
+    height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
